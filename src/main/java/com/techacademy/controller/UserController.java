@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute; // 追加
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping; // 追加
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -28,10 +29,17 @@ public class UserController {
         return "user/list";
     }
 
-    // ----- 追加:ここから -----
     /** User登録画面を表示 */
     @GetMapping("/register")
     public String getRegister(@ModelAttribute User user) {
+        // User登録画面に遷移
+        return "user/register";
+    }
+
+    @GetMapping("/register2") //解説用(@ModelAttribute User userについて）
+    public String getRegister2(Model model, User user) {
+        User a = service.getUserList().get(0);
+        model.addAttribute("user", a);
         // User登録画面に遷移
         return "user/register";
     }
@@ -44,5 +52,24 @@ public class UserController {
         // 一覧画面にリダイレクト
         return "redirect:/user/list";
     }
-    // ----- 追加:ここまで -----
+
+    /**User更新画面を表示*/
+    @GetMapping("/update/{id}/")
+    public String getUser(@PathVariable ("id") Integer id, Model model) {
+        //Modelに登録
+        model.addAttribute("user", service.getUser(id));
+        // User更新画面に遷移
+        return "user/update";
+    }
+
+    /**User更新処理*/
+    @PostMapping("/update/{id}/")
+    public String postUser(User user) {
+        // User登録
+        service.saveUser(user);
+        // 一覧画面にリダイレクト
+        return "redirect:/user/list";
+    }
+
+
 }
