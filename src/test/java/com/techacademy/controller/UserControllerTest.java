@@ -72,11 +72,13 @@ class UserControllerTest {
     void testGetList() throws Exception {
         MvcResult result = mockMvc.perform(get("/user/list"))
                 .andExpect(status().isOk())
+                .andExpect(model().attributeExists("userlist"))
                 .andExpect(model().hasNoErrors())
                 .andExpect(view().name("user/list"))
                 .andReturn();
 
         List<User> user = (List<User>)result.getModelAndView().getModel().get("userlist"); //中身を見るだけなのでArrayListによるインスタンス不要
+        int listCount = user.size();
         User user1 = user.get(0); //List型では中身が出せないので、入れ替えて取得
         assertEquals(1, user1.getId());
         assertEquals("キラメキ太郎", user1.getName());
