@@ -79,6 +79,7 @@ class UserControllerTest {
 
         List<User> user = (List<User>)result.getModelAndView().getModel().get("userlist"); //中身を見るだけなのでArrayListによるインスタンス不要
         int listCount = user.size();
+        assertEquals(3, listCount);
         User user1 = user.get(0); //List型では中身が出せないので、入れ替えて取得
         assertEquals(1, user1.getId());
         assertEquals("キラメキ太郎", user1.getName());
